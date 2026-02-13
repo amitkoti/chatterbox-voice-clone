@@ -84,7 +84,16 @@ def main():
     print("Creating Presentation with Zoom Slides in Correct Order")
     print("=" * 70)
 
-    original_path = "Inbound/MDF/Module_01_Foundation_Setup.pptx"
+    # Find latest Module_01_Foundation_Setup file
+    mdf_dir = Path("Inbound/MDF")
+    foundation_files = sorted(mdf_dir.glob("Module_01_Foundation_Setup*.pptx"), key=os.path.getmtime, reverse=True)
+
+    if not foundation_files:
+        print("Error: No Module_01_Foundation_Setup.pptx found!")
+        print("Run: python generate_module01_slides.py first")
+        return
+
+    original_path = str(foundation_files[0])
     images_dir = Path("Inbound/MDF/images")
 
     # Slides that get zoom slides AFTER them (1-indexed)

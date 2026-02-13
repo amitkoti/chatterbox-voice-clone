@@ -10,13 +10,16 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "_video_automation"))
 from snowbrix_layouts_complete import SnowbrixLayoutsComplete
 
 def main():
-    # Output file
-    output_file = "Inbound/MDF/Module_01_Foundation_Setup.pptx"
+    from datetime import datetime
+
+    # Output file with timestamp to avoid locking issues
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_file = f"Inbound/MDF/Module_01_Foundation_Setup_{timestamp}.pptx"
 
     print("Creating Module 01 Foundation Setup presentation...")
 
-    # Initialize composer with logo and page numbers
-    composer = SnowbrixLayoutsComplete(output_file, include_logo=True, include_page_numbers=True)
+    # Initialize composer with logo (no page numbers)
+    composer = SnowbrixLayoutsComplete(output_file, include_logo=True, include_page_numbers=False)
 
     # Slide 1: Title
     composer.add_title_slide(

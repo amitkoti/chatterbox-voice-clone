@@ -16,7 +16,7 @@ from lxml.etree import Element
 class SnowbrixLayoutsComplete:
     """Complete professional layout system for Snowbrix"""
 
-    def __init__(self, output_path: str, include_logo: bool = True, include_page_numbers: bool = True):
+    def __init__(self, output_path: str, include_logo: bool = True, include_page_numbers: bool = False):
         self.output_path = output_path
         self.prs = Presentation()
         self.prs.slide_width = Inches(16)
@@ -324,21 +324,35 @@ class SnowbrixLayoutsComplete:
                 ct_para.font.size = Pt(28)
                 ct_para.font.bold = True
                 ct_para.font.color.rgb = self.colors['color_secondary']
-                col_y += 0.7
+                col_y += 1.0  # Increased from 0.7 to 1.0
 
-            # Column points
+            # Column points with sage green circles
             if col_points:
                 for i, point in enumerate(col_points[:4]):
+                    item_y = col_y + i * 0.7  # Reduced from 1.0 to 0.7
+
+                    # Green bullet circle
+                    circle = slide.shapes.add_shape(
+                        1, Inches(col_x), Inches(item_y + 0.05),
+                        Inches(0.18), Inches(0.18)
+                    )
+                    circle.fill.solid()
+                    circle.fill.fore_color.rgb = self.colors['color_secondary']
+                    circle.line.fill.background()
+
+                    # Point text
                     point_box = slide.shapes.add_textbox(
-                        Inches(col_x), Inches(col_y + i * 1.0),
-                        Inches(4.5), Inches(0.8)
+                        Inches(col_x + 0.35), Inches(item_y),
+                        Inches(4.15), Inches(0.6)
                     )
                     pf = point_box.text_frame
-                    pf.text = f"• {point}"
+                    pf.clear()
+                    pf.text = point
                     pf.word_wrap = True
                     pp = pf.paragraphs[0]
                     pp.font.size = Pt(20)
                     pp.font.color.rgb = self.colors['text_secondary']
+                    self._remove_bullets(pp)
 
         if notes:
             slide.notes_slide.notes_text_frame.text = notes
@@ -660,9 +674,9 @@ class SnowbrixLayoutsComplete:
 
         # Left content (bullets indented under heading)
         if left_content:
-            content_y = col_y + (0.7 if left_title else 0)
+            content_y = col_y + (1.0 if left_title else 0)  # Increased from 0.7 to 1.0
             for i, item in enumerate(left_content[:5]):
-                y_pos = content_y + i * 1.1
+                y_pos = content_y + i * 0.75  # Reduced from 1.1 to 0.75
 
                 # Green bullet circle (indented under heading)
                 circle = slide.shapes.add_shape(
@@ -702,9 +716,9 @@ class SnowbrixLayoutsComplete:
 
         # Right content (bullets indented under heading)
         if right_content:
-            content_y = col_y + (0.7 if right_title else 0)
+            content_y = col_y + (1.0 if right_title else 0)  # Increased from 0.7 to 1.0
             for i, item in enumerate(right_content[:5]):
-                y_pos = content_y + i * 1.1
+                y_pos = content_y + i * 0.75  # Reduced from 1.1 to 0.75
 
                 # Green bullet circle (indented under heading)
                 circle = slide.shapes.add_shape(
