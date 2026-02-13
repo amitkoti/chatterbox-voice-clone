@@ -326,24 +326,24 @@ class SnowbrixLayoutsComplete:
                 ct_para.font.color.rgb = self.colors['color_secondary']
                 col_y += 1.0  # Increased from 0.7 to 1.0
 
-            # Column points with sage green circles
+            # Column points with sage green circles (indented under title)
             if col_points:
                 for i, point in enumerate(col_points[:4]):
                     item_y = col_y + i * 0.7  # Reduced from 1.0 to 0.7
 
-                    # Green bullet circle
+                    # Green bullet circle (indented 0.3" from column title)
                     circle = slide.shapes.add_shape(
-                        1, Inches(col_x), Inches(item_y + 0.05),
+                        1, Inches(col_x + 0.3), Inches(item_y + 0.05),  # Indented from col_x
                         Inches(0.18), Inches(0.18)
                     )
                     circle.fill.solid()
                     circle.fill.fore_color.rgb = self.colors['color_secondary']
                     circle.line.fill.background()
 
-                    # Point text
+                    # Point text (indented further for hierarchy)
                     point_box = slide.shapes.add_textbox(
-                        Inches(col_x + 0.35), Inches(item_y),
-                        Inches(4.15), Inches(0.6)
+                        Inches(col_x + 0.65), Inches(item_y),  # Indented 0.65" total
+                        Inches(3.85), Inches(0.6)
                     )
                     pf = point_box.text_frame
                     pf.clear()
@@ -506,11 +506,20 @@ class SnowbrixLayoutsComplete:
             sub_para.font.color.rgb = self.colors['color_secondary']
             start_y += 0.7
 
-        # Paragraphs
+        # Add decorative left accent bar for visual interest
+        accent_bar = slide.shapes.add_shape(
+            1, Inches(0.5), Inches(start_y),
+            Inches(0.15), Inches(5.5)
+        )
+        accent_bar.fill.solid()
+        accent_bar.fill.fore_color.rgb = self.colors['color_secondary']
+        accent_bar.line.fill.background()
+
+        # Paragraphs with better typography
         if paragraphs:
             para_box = slide.shapes.add_textbox(
-                Inches(0.8), Inches(start_y),
-                Inches(14), Inches(7 - start_y)
+                Inches(1.2), Inches(start_y + 0.3),  # Increased left margin, added top padding
+                Inches(13.5), Inches(6.5)
             )
             para_frame = para_box.text_frame
             para_frame.word_wrap = True
@@ -521,7 +530,11 @@ class SnowbrixLayoutsComplete:
                     para_frame.add_paragraph()
                 p = para_frame.paragraphs[i]
                 p.text = para_text
-                p.font.size = Pt(20)
+                p.font.size = Pt(26)  # Increased from 20pt to 26pt
+                p.font.color.rgb = self.colors['text_primary']
+                p.line_spacing = 1.4  # Better readability
+                if i > 0:
+                    p.space_before = Pt(20)  # Space between paragraphs
                 p.font.color.rgb = self.colors['text_secondary']
                 p.space_after = Pt(12)
 
@@ -680,7 +693,7 @@ class SnowbrixLayoutsComplete:
 
                 # Green bullet circle (indented under heading)
                 circle = slide.shapes.add_shape(
-                    1, Inches(1.0), Inches(y_pos + 0.1),  # Indented from 0.8 to 1.0
+                    1, Inches(1.2), Inches(y_pos + 0.1),  # Increased from 1.0 to 1.2 for more indent
                     Inches(0.2), Inches(0.2)
                 )
                 circle.fill.solid()
@@ -689,8 +702,8 @@ class SnowbrixLayoutsComplete:
 
                 # Item text (indented further right)
                 item_box = slide.shapes.add_textbox(
-                    Inches(1.4), Inches(y_pos),  # Indented from 1.2 to 1.4
-                    Inches(6.0), Inches(0.9)
+                    Inches(1.6), Inches(y_pos),  # Increased from 1.4 to 1.6 for more indent
+                    Inches(5.8), Inches(0.9)
                 )
                 itf = item_box.text_frame
                 itf.clear()
@@ -722,7 +735,7 @@ class SnowbrixLayoutsComplete:
 
                 # Green bullet circle (indented under heading)
                 circle = slide.shapes.add_shape(
-                    1, Inches(8.7), Inches(y_pos + 0.1),  # Indented from 8.5 to 8.7
+                    1, Inches(8.9), Inches(y_pos + 0.1),  # Increased from 8.7 to 8.9 for more indent
                     Inches(0.2), Inches(0.2)
                 )
                 circle.fill.solid()
@@ -731,8 +744,8 @@ class SnowbrixLayoutsComplete:
 
                 # Item text (indented further right)
                 item_box = slide.shapes.add_textbox(
-                    Inches(9.1), Inches(y_pos),  # Indented from 8.9 to 9.1
-                    Inches(6.0), Inches(0.9)
+                    Inches(9.3), Inches(y_pos),  # Increased from 9.1 to 9.3 for more indent
+                    Inches(5.8), Inches(0.9)
                 )
                 itf = item_box.text_frame
                 itf.clear()

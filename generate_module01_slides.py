@@ -238,7 +238,7 @@ def main():
     ])
 
     # Slide 29: Thank You
-    composer.add_thank_you_slide("Thank You!", "course@snowbrix.ai | snowbrix.ai/mdf")
+    composer.add_thank_you_slide("Thank You!", "contact@snowbrixai.com | snowbrixai.com/mdf")
 
     # Save presentation
     composer.save()
