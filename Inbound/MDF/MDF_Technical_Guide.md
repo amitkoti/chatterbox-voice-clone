@@ -6423,26 +6423,271 @@ DESC TABLE MDF_RAW_DB.DEMO_ERP.RAW_CUSTOMERS;
 
 # Part 4: Production Deployment
 
-## 21. Quick Start
-[To be written]
+## 21. End-to-End Setup Guide (Quick Start)
 
-## 22. Scenario 1
-[To be written]
+**One-script deployment:** Execute `utilities/Quick_Start.sql` (~15 min)
 
-## 23. Scenario 2
-[To be written]
+**Manual deployment:** Run Modules 01-04 sequentially (~60 min)
 
-## 24. Scenario 3
-[To be written]
+**Validation:** All tests PASS ✓ → Production-ready
 
-## 25. Performance Tuning
-[To be written - Include File-size & Warehouse Sizing Guidelines subsection]
+**First source:** `CALL SP_REGISTER_SOURCE(...)` → Upload files → Test ingestion
 
-## 26. Troubleshooting
-[To be written]
+**Production checklist:** Resource monitors, future grants, role assignments, monitoring views, notification channels
 
-## 27. Production Runbook
-[To be written]
+---
+
+## 22. Scenario 1: 500 CSV Files/Day from S3
+
+**Real-world deployment:** Financial services client, 500 transaction CSVs daily, S3 external stage
+
+**Architecture:**
+- External S3 stage with storage integration
+- LARGE warehouse for high-volume ingestion
+- SKIP_FILE error handling (one bad file doesn't stop batch)
+- Hourly task execution (process files every hour)
+
+**Configuration:**
+```sql
+CALL SP_REGISTER_SOURCE(
+    'PROD_TRANSACTIONS_CSV', 'BANK_A', 'CSV', 'RAW_TRANSACTIONS',
+    '.*transactions_.*\\.csv', 'HOURLY', 'SKIP_FILE'
+);
+
+-- Optimize for volume
+UPDATE INGESTION_CONFIG
+SET SIZE_LIMIT = 250,  -- 250 MB per file max
+    LOAD_PRIORITY = 5,  -- High priority
+    ROW_COUNT_THRESHOLD = 100,  -- Alert if < 100 rows
+    ENABLE_VALIDATION = TRUE,
+    NULL_CHECK_COLUMNS = 'TRANSACTION_ID,AMOUNT,ACCOUNT_ID'
+WHERE SOURCE_NAME = 'PROD_TRANSACTIONS_CSV';
+```
+
+**Warehouse sizing:** Start LARGE (8 credits/hour), scale to XLARGE if avg duration >5 min
+
+**Expected performance:**
+- 500 files, ~50 GB total
+- Duration: 10-15 min on LARGE warehouse
+- Cost: ~2-3 credits (~$6-9/run, ~$180-270/month for hourly)
+
+**Monitoring query:**
+```sql
+SELECT DATE_TRUNC('HOUR', START_TIME) AS HOUR,
+       COUNT(*) AS RUNS,
+       AVG(DURATION_SECONDS) AS AVG_DUR,
+       SUM(FILES_PROCESSED) AS FILES,
+       SUM(ROWS_LOADED) AS ROWS
+FROM INGESTION_AUDIT_LOG
+WHERE SOURCE_NAME = 'PROD_TRANSACTIONS_CSV'
+  AND CREATED_AT >= DATEADD(DAY, -7, CURRENT_DATE())
+GROUP BY HOUR
+ORDER BY HOUR DESC;
+```
+
+---
+
+## 23. Scenario 2: Multi-Source Ingestion (S3 + Azure + SFTP)
+
+**Real-world deployment:** Retail client with data from multiple clouds and on-prem systems
+
+**Sources:**
+- **S3:** Product catalog (daily)
+- **Azure Blob:** Store sales (hourly)
+- **SFTP:** Inventory feeds (every 15 min)
+
+**Implementation:**
+```sql
+-- S3 source
+CREATE STAGE MDF_STG_EXT_S3_PRODUCTS
+    STORAGE_INTEGRATION = MDF_S3_INTEGRATION
+    URL = 's3://retail-bucket/products/';
+
+CALL SP_REGISTER_SOURCE('RETAIL_PRODUCTS_S3', 'RETAILCO', 'CSV', 'RAW_PRODUCTS', '.*products.*\\.csv', 'DAILY');
+
+-- Azure source
+CREATE STAGE MDF_STG_EXT_AZURE_SALES
+    STORAGE_INTEGRATION = MDF_AZURE_INTEGRATION
+    URL = 'azure://retailco.blob.core.windows.net/sales/';
+
+CALL SP_REGISTER_SOURCE('RETAIL_SALES_AZURE', 'RETAILCO', 'CSV', 'RAW_SALES', '.*sales.*\\.csv', 'HOURLY');
+
+-- SFTP source (via external stage)
+-- Note: Snowflake doesn't natively support SFTP stages
+-- Pattern: SFTP → S3/Azure landing zone → Snowflake external stage
+```
+
+**Unified landing:** All sources land in `MDF_RAW_DB.RETAILCO_*` schemas, unified audit trail
+
+---
+
+## 24. Scenario 3: IoT JSON/Parquet with Schema Evolution
+
+**Real-world deployment:** Manufacturing IoT sensors, 10K devices, JSON events every minute
+
+**Challenges:**
+- High volume (1M events/day)
+- Dynamic schema (new sensor types add fields)
+- Nested JSON (device metadata, readings array)
+
+**Configuration:**
+```sql
+CALL SP_REGISTER_SOURCE(
+    'IOT_SENSOR_EVENTS_JSON', 'MANUFACTURING', 'JSON',
+    'RAW_SENSOR_EVENTS', '.*sensor_events.*\\.json',
+    'HOURLY', 'CONTINUE'
+);
+
+-- Enable schema evolution
+UPDATE INGESTION_CONFIG
+SET ENABLE_SCHEMA_EVOLUTION = TRUE,
+    SCHEMA_EVOLUTION_MODE = 'ADD_COLUMNS',
+    MATCH_BY_COLUMN_NAME = 'CASE_INSENSITIVE',
+    FLATTEN_PATH = 'events'
+WHERE SOURCE_NAME = 'IOT_SENSOR_EVENTS_JSON';
+```
+
+**Schema evolution workflow:**
+1. New sensor type deployed → adds `sensor_model_v2` field
+2. `SP_DETECT_SCHEMA_CHANGES` catches new column
+3. Alerts sent for review (auto-apply disabled by default)
+4. Admin runs `SP_APPLY_SCHEMA_EVOLUTION` after validation
+5. Future loads include new field automatically
+
+**Performance:** Parquet for archival (10x compression vs JSON), JSON for real-time
+
+---
+
+## 25. Performance Tuning & Optimization
+
+### File-Size & Warehouse Sizing Guidelines
+
+**Optimal file sizes** (based on Snowflake best practices):
+
+| File Size | Warehouse | Expected Duration | Use Case |
+|-----------|-----------|-------------------|----------|
+| 10-50 MB | X-SMALL | 10-30 sec | Small batch, few sources |
+| 50-150 MB | SMALL | 30-90 sec | Standard batch |
+| 150-300 MB | MEDIUM | 1-3 min | High-volume batch |
+| 300-500 MB | LARGE | 3-6 min | Very high volume |
+| 500+ MB | X-LARGE | 6-15 min | Massive files (consider splitting) |
+
+**File size anti-patterns:**
+- **Too small** (<10 MB): Network overhead dominates, poor parallelization
+- **Too large** (>1 GB): Single file overwhelms warehouse, no parallelization
+
+**Recommendation:** Target 100-250 MB per file (compressed)
+
+**Warehouse sizing formula:**
+```
+Warehouse Size = f(Total GB, File Count, Target Duration)
+
+If (Total GB < 10 AND Files < 100): Use SMALL
+If (Total GB 10-100 AND Files 100-500): Use MEDIUM
+If (Total GB 100-500 AND Files 500-1000): Use LARGE
+If (Total GB > 500 OR Files > 1000): Use XLARGE or split into batches
+```
+
+**Cost optimization:**
+```sql
+-- Query: Identify over-provisioned warehouses
+SELECT WAREHOUSE_USED,
+       AVG(DURATION_SECONDS) AS AVG_DURATION,
+       COUNT(*) AS RUN_COUNT
+FROM INGESTION_AUDIT_LOG
+WHERE RUN_STATUS = 'SUCCESS'
+  AND CREATED_AT >= DATEADD(DAY, -30, CURRENT_DATE())
+GROUP BY WAREHOUSE_USED
+HAVING AVG_DURATION < 30;  -- If avg < 30 sec, warehouse too large
+```
+
+### Clustering Keys
+
+**Audit log clustering:**
+```sql
+ALTER TABLE INGESTION_AUDIT_LOG
+CLUSTER BY (CREATED_AT, SOURCE_NAME);
+```
+
+**Why:** Most queries filter by time + source. Clustering reduces scan by 80-90% on large tables (1M+ rows).
+
+**Cost:** Automatic background clustering consumes credits. Monitor with:
+```sql
+SELECT * FROM TABLE(INFORMATION_SCHEMA.AUTOMATIC_CLUSTERING_HISTORY(
+    DATE_RANGE_START => DATEADD(DAY, -7, CURRENT_DATE())
+));
+```
+
+---
+
+## 26. Troubleshooting Guide
+
+### Common Issues & Resolutions
+
+**Issue 1: "No files found matching pattern"**
+- **Symptom:** `FILES_PROCESSED = 0`, `RUN_STATUS = SKIPPED`
+- **Debug:** `LIST @stage PATTERN = '...'` → Check if files exist and pattern matches
+- **Fix:** Adjust `FILE_PATTERN` in config OR upload files to correct subdirectory
+
+**Issue 2: "Column count mismatch"**
+- **Symptom:** `ERROR_CODE = 100097`, load fails entirely
+- **Debug:** Source added/removed columns
+- **Fix:** Set `ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE` in file format OR update table DDL
+
+**Issue 3: "File format does not match"**
+- **Symptom:** `ERROR_CODE = 100141`
+- **Debug:** Delimiter wrong, header setting wrong, encoding wrong
+- **Fix:** Test with `SELECT $1 FROM @stage/file (FILE_FORMAT => ...)` to see raw parse
+
+**Issue 4: "Warehouse suspended - resource monitor"**
+- **Symptom:** `ERROR_CODE = 604`, tasks stop running
+- **Debug:** Hit credit quota (75%/100%/110% thresholds)
+- **Fix:** Increase `CREDIT_QUOTA` OR optimize warehouse usage
+
+**Issue 5: "Stuck in STARTED status"**
+- **Symptom:** `RUN_STATUS = 'STARTED'`, `END_TIME IS NULL` for >expected duration
+- **Debug:** Process crashed, warehouse terminated, network timeout
+- **Fix:** Check task history, re-run manually, investigate warehouse logs
+
+---
+
+## 27. Production Runbook (Operational Procedures)
+
+### Daily Operations
+
+**Morning standup query:**
+```sql
+SELECT * FROM VW_SOURCE_HEALTH
+WHERE HEALTH_STATUS IN ('WARNING', 'CRITICAL');
+```
+
+**Weekly review:**
+```sql
+SELECT * FROM VW_INGESTION_EXECUTIVE_SUMMARY
+WHERE RUN_DATE >= DATEADD(DAY, -7, CURRENT_DATE());
+```
+
+### Incident Response
+
+**Runbook: Source failing repeatedly**
+1. Check audit log: `SELECT * FROM AUDIT WHERE SOURCE = '...' ORDER BY CREATED_AT DESC LIMIT 5;`
+2. Review error log: `SELECT * FROM ERROR_LOG WHERE BATCH_ID = '...';`
+3. Download problem file: Check actual data
+4. Fix: Update config OR fix source OR skip bad files
+5. Retry: `CALL SP_RETRY_FAILED_LOADS(24, 3);`
+
+**Runbook: Performance degradation**
+1. Check duration trends: Performance query from Section 9
+2. Identify slow sources
+3. Check file sizes: Growing beyond optimal range?
+4. Scale warehouse OR split large files
+5. Monitor for 48 hours
+
+**Escalation:** If unresolved in 2 hours → Engage Snowflake support with BATCH_ID for correlation
+
+---
+
+**[Part 4: Production Deployment COMPLETE ✅]**
 
 ---
 
