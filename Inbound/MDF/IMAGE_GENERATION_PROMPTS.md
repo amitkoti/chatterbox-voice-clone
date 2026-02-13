@@ -8,7 +8,14 @@ Use these prompts with Google AI Studio: https://aistudio.google.com/
 - Quality: High
 - Safety: Default
 
+**IMPORTANT:** Add this to ALL prompts:
+```
+NO TEXT IN IMAGE. NO LABELS. NO WATERMARKS. Visual elements only.
+```
+
 **Save images to:** `Inbound/MDF/images/`
+
+**Note:** If generated images contain unwanted text, regenerate with the "NO TEXT" instruction emphasized.
 
 ---
 
