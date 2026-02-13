@@ -1,0 +1,36 @@
+{
+  "EtlVsELT_Slide": {
+    "name": "EtlVsELT_Slide",
+    "pptx_path": "",
+    "project_dir": "_projects\\EtlVsELT_Slide",
+    "total_slides": 1,
+    "prompts_generated": 1,
+    "images_ready": 0,
+    "images_manual": 0,
+    "images_generated": 0,
+    "slides_created": false,
+    "audio_ready": 0,
+    "video_created": false,
+    "created_at": "2026-02-12T22:08:05.670135",
+    "updated_at": "2026-02-12T22:09:03.705594",
+    "current_stage": "prompts_complete",
+    "completion_percent": 20
+  },
+  "Northern Trust Snowflake Modernization": {
+    "name": "Northern Trust Snowflake Modernization",
+    "pptx_path": "",
+    "project_dir": "_projects\\Northern Trust Snowflake Modernization",
+    "total_slides": 12,
+    "prompts_generated": 12,
+    "images_ready": 0,
+    "images_manual": 0,
+    "images_generated": 0,
+    "slides_created": false,
+    "audio_ready": 0,
+    "video_created": false,
+    "created_at": "2026-02-12T22:08:05.704070",
+    "updated_at": "2026-02-12T22:09:03.711521",
+    "current_stage": "prompts_complete",
+    "completion_percent": 20
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "project_name": "sample_video",
+  "voice": "amit",
+  "resolution": "1920x1080",
+  "fps": 30,
+  "transition": "fade",
+  "pause_between_slides": 0.5,
+  "min_slide_duration": 3.0,
+  "features": {
+    "captions": true,
+    "chapters": true,
+    "broll": true
+  },
+  "broll_directory": "_broll/screen_recordings",
+  "output_directory": "_projects/sample_video/output",
+  "markers": {
+    "screen": "[SCREEN:filename]",
+    "pause": "[PAUSE:seconds]",
+    "slow": "[SLOW]",
+    "fast": "[FAST]"
+  },
+  "notes": "This is a sample configuration for the video automation system"
+}

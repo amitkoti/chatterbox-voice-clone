@@ -1,0 +1,19 @@
+Slide 1: Module 01: Foundation Setup
+Type: title
+======================================================================
+
+Professional title image for data engineering presentation.
+Title: Module 01: Foundation Setup
+
+Style: Modern, warm, professional, educational
+Background: Abstract data visualization, flowing data streams, or cloud infrastructure
+Colors: Soft cream/beige (#FDF8F3) background with forest green (#2D5F3F) and sage green (#6B9080) accents
+Elements: Subtle geometric patterns, data nodes, or connection lines in green tones
+Mood: Professional, warm, inviting, trustworthy, educational
+Text: Large, clean typography for title (if needed)
+
+Visual elements suggesting: data engineering, cloud, analytics
+
+Format: 16:9 aspect ratio, light cream background with green accents
+Quality: High resolution, professional corporate presentation style
+Aesthetic: Warm, approachable, modern educational platform style

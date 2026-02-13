@@ -1,0 +1,24 @@
+Slide 12: 
+Type: metrics
+======================================================================
+
+Performance metrics visualization for: 
+
+Visual elements:
+- Bar charts or column charts showing performance comparisons
+- Upward trending graphs (indicating improvement)
+- Key metric cards with large numbers
+- Speed/performance indicators
+
+Style: Data visualization, dashboard-like
+Colors: Blue/green for positive metrics, professional color scheme
+Background: Dark or gradient background
+Layout: Clean, organized, easy to read
+Typography: Large numbers, clear labels
+
+Context: Data engineering performance metrics
+
+Metrics might include: Speed, cost, scalability, efficiency
+
+Mood: Professional, data-driven, impressive results
+Format: 16:9 aspect ratio, business presentation style

@@ -1,0 +1,31 @@
+Slide 3: Why Separate Databases?
+Type: features
+======================================================================
+
+Feature highlights visual for: Why Separate Databases?
+
+Style: Icon grid or feature showcase
+Layout: 2x3 or 3x2 grid of feature cards
+
+Each feature represented by:
+- Clean icon (checkmark, star, lightning, shield, rocket, etc.) in forest green
+- Short descriptive text
+- Visual consistency across all features
+
+Design: Modern, clean, warm, professional
+Colors: Forest green (#2D5F3F) and sage green (#6B9080) icons with terracotta (#C97D60) highlights
+Background: Soft cream/beige (#FDF8F3) warm educational style
+Icons: Simple, modern, recognizable in green tones
+Typography: Clean, readable fonts
+
+Context: Data engineering platform features
+
+
+Overall mood: Innovative, powerful, reliable, warm, approachable, professional
+Format: 16:9 aspect ratio, presentation-ready quality
+
+Key Points to Visualize:
+1. Isolation - Workload separation prevents interference
+2. Security - Grant analysts CURATED access without exposing RAW
+3. Cost Tracking - Track spending per database layer
+4. Data Safety - RAW layer preserves original source data

@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Audio/Video outputs (large files)
+*.wav
+*.mp4
+*.mp3
+*.avi
+*.mov
+
+# But keep reference audio samples
+!_reference_audio/*.wav
+
+# PowerPoint files (can be large)
+*.pptx
+!Snowflake_Template_2025.pptx
+!_video_automation/examples/*.pptx
+
+# Project outputs
+_projects/*/output/
+_projects/*/slides_rendered/
+Amit_Clone/
+Saanvi_Clone/
+
+# Temporary files
+*.tmp
+*TEMP_MPY_wvf_snd.mp4
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# API Keys and sensitive data
+api_keys.json
+.env
+*.key
+
+# Claude settings (optional - keep local only)
+.claude/settings.local.json
+
+# Logs
+*.log

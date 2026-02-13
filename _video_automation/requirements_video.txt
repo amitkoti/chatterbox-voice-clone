@@ -1,0 +1,23 @@
+# Video Automation Dependencies
+# Install with: pip install -r requirements_video.txt
+
+# PowerPoint handling
+python-pptx>=0.6.21
+
+# Video creation and editing
+moviepy>=1.0.3
+
+# Image processing
+Pillow>=10.0.0
+
+# Audio processing (already installed for voice cloning)
+soundfile>=0.12.1
+pydub>=0.25.1
+
+# Optional: For advanced features
+# opencv-python>=4.8.0  # Advanced image/video processing
+# ffmpeg-python>=0.2.0  # Direct ffmpeg control
+
+# Note: moviepy requires ffmpeg to be installed on your system
+# Windows: Download from https://ffmpeg.org/download.html
+# Or use: winget install ffmpeg

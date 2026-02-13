@@ -1,0 +1,36 @@
+Slide 2: Four-Database Architecture
+Type: architecture
+======================================================================
+
+Technical architecture diagram for: Four-Database Architecture
+
+Diagram showing: Data engineering pipeline/architecture
+Components to visualize:
+- Data sources (left side): Databases, APIs, streaming data
+- Ingestion layer: Data connectors, ETL/ELT tools
+- Storage layer: Data warehouse, data lake (Snowflake, Databricks, cloud storage)
+- Processing layer: Data transformation, compute engines
+- Output layer (right side): BI tools, analytics, ML models
+
+Style: Modern technical diagram, warm educational aesthetic
+Visual elements:
+- Component boxes with icons
+- Arrows showing data flow (left to right)
+- Clean, minimalist design
+- Color-coded layers (forest green #2D5F3F for storage, sage green #6B9080 for processing, terracotta #C97D60 for output)
+
+Colors: Forest green (#2D5F3F) and sage green (#6B9080) primary, terracotta (#C97D60) accents
+Background: Soft cream/beige (#FDF8F3) for clarity
+Layout: Horizontal flow chart style, organized layers
+Icons: Use simple, recognizable tech/data icons in green tones
+
+Key technologies: cloud data platforms
+
+Format: 16:9 aspect ratio, professional warm educational style
+Clarity: Labels for each component, easy to understand
+
+Key Points to Visualize:
+1. MDF_CONTROL_DB - Brain: config tables, procedures, audit logs
+2. MDF_RAW_DB - Landing zone: raw data exactly as-is from source
+3. MDF_STAGING_DB - Cleaned and validated data with quality checks
+4. MDF_CURATED_DB - Business-ready data for analyst queries

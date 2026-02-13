@@ -1,0 +1,22 @@
+Slide 7: Security Design Principles
+Type: comparison
+======================================================================
+
+Comparison visual for: Security Design Principles
+
+Show: Side-by-side comparison of concepts
+Style: Professional split-screen or dual panel design
+Elements: Icons, symbols, or visual metaphors for each side
+Colors: Forest green (#2D5F3F) and sage green (#6B9080) accents with terracotta highlights (#C97D60)
+Background: Soft cream/beige (#FDF8F3)
+Layout: Clear visual separation, balanced design
+Mood: Objective, analytical, warm, professional
+
+Format: 16:9 aspect ratio, clean warm educational style
+
+
+Key Points to Visualize:
+1. Functional roles over user roles (MDF_LOADER vs JOHN_ROLE)
+2. Least-privilege access - minimum permissions needed
+3. Future grants - new objects inherit permissions automatically
+4. Blast radius containment - compromised loader only affects RAW

@@ -1,0 +1,18 @@
+Slide 1: Welcome to Video Automation
+Type: title
+======================================================================
+
+Professional title image for data engineering presentation.
+Title: Welcome to Video Automation
+
+Style: Modern, corporate, technology-focused
+Background: Abstract data visualization, flowing data streams, or cloud infrastructure
+Colors: Blue/teal gradient (data/tech theme), professional
+Elements: Subtle geometric patterns, data nodes, or connection lines
+Mood: Professional, innovative, cutting-edge technology
+Text: Large, clean typography for title (if needed)
+
+Visual elements suggesting: data engineering, cloud, analytics
+
+Format: 16:9 aspect ratio, dark background with bright accents
+Quality: High resolution, professional corporate presentation style

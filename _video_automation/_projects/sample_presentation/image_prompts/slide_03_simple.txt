@@ -1,0 +1,22 @@
+Slide 3: How It Works
+Type: simple
+======================================================================
+
+Concept visualization for: How It Works
+
+Style: Clean, minimal, professional
+Visual: Abstract or conceptual representation of the main idea
+Elements:
+- Simple geometric shapes or flowing lines
+- Data/technology aesthetic
+- Minimalist design
+
+Colors: Blue/teal primary colors (data theme)
+Background: Dark or gradient background
+Mood: Professional, modern, clear
+Layout: Centered, balanced, not cluttered
+
+Context: data engineering concept
+
+Format: 16:9 aspect ratio, corporate presentation style
+Simple, elegant, supports the message without overwhelming

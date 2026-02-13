@@ -1,0 +1,27 @@
+{
+  "google_accounts": [
+    {
+      "name": "Account 1 (work)",
+      "api_key": "AIzaSy... (get from https://aistudio.google.com/apikey)",
+      "daily_limit": 50,
+      "notes": "Primary account - Free tier: 50 requests/day"
+    },
+    {
+      "name": "Account 2 (personal)",
+      "api_key": "AIzaSy... (replace with your second account key)",
+      "daily_limit": 50,
+      "notes": "Backup account"
+    },
+    {
+      "name": "Account 3 (backup)",
+      "api_key": "AIzaSy... (replace with your third account key)",
+      "daily_limit": 50,
+      "notes": "Emergency backup"
+    }
+  ],
+  "fallback": {
+    "dalle_key": "sk-... (optional: OpenAI API key for DALL-E fallback)",
+    "stability_key": "sk-... (optional: Stability AI key for fallback)",
+    "notes": "These are optional fallback APIs if all Google quota exhausted"
+  }
+}
