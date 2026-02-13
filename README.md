@@ -1,353 +1,422 @@
-# Voice Cloning System - Chatterbox TTS
+# Chatterbox Voice Clone & Video Automation
 
-Complete voice cloning system using Chatterbox TTS with support for multiple voices.
+Complete AI-powered voice cloning and video automation system featuring:
+- 🎤 **Voice Cloning** with Chatterbox TTS (Amit & Saanvi voices)
+- 🎬 **Video Automation** - PowerPoint → Professional Videos
+- 🎨 **Snowbrix Slide Design** - Branded presentation system
+- 🖼️ **AI Image Generation** - Google Gemini/Imagen integration
 
-**🎬 NEW: Video Automation System** - Create complete videos from PowerPoint + voice narration! See `_video_automation/` folder.
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue)](https://github.com/amitkoti/chatterbox-voice-clone)
 
 ---
 
-## ✅ Yes, You Can Run From PowerShell!
+## 🚀 Quick Start
 
-All Python scripts can be run directly from PowerShell:
+### Voice Cloning
 ```powershell
+# Generate audio with Amit's voice
 python amit_narrate.py your_script.txt
-python clone_amit_voice.py
+
+# Generate audio with Saanvi's voice
 python clone_saanvi_voice.py
 ```
 
----
-
-## 📁 Folder Structure
-
-```
-Chartterbox/
-│
-├── README.md                       # This file
-│
-├── _reference_audio/               # Voice samples (DO NOT DELETE)
-│   ├── audio_sample.wav           # Amit's voice reference
-│   └── Saanvi_Voice_Clone.wav     # Saanvi's voice reference
-│
-├── Main Scripts (USE THESE):
-│   ├── amit_narrate.py            # Generate audio with Amit's voice (from file)
-│   ├── clone_amit_voice.py        # Generate audio with Amit's voice (paste in script)
-│   └── clone_saanvi_voice.py      # Generate audio with Saanvi's voice
-│
-├── _scripts/                       # Utility scripts
-│   ├── combine_audio_files.py     # Combine multiple audio files
-│   └── generate_long_audio.py     # Universal long audio generator
-│
-├── _video_automation/              # 🎬 NEW - Video Creation System
-│   ├── video_creator.py            # Main video automation tool
-│   ├── ppt_parser.py               # PowerPoint reader
-│   ├── video_composer.py           # Video assembler
-│   ├── README_VIDEO.md             # Video automation guide
-│   └── requirements_video.txt      # Video dependencies
-│
-├── _projects/                      # Video projects (auto-created)
-│   └── [your_videos]/              # Individual video projects
-│
-├── _broll/                         # B-roll footage library
-│   ├── screen_recordings/          # Screen demos
-│   ├── intro_outros/               # Intro/outro clips
-│   └── transitions/                # Transition effects
-│
-├── _docs/                          # Documentation
-│   ├── VOICE_CLONES_QUICK_REFERENCE.md
-│   ├── AUDIO_LENGTH_GUIDE.md
-│   └── VOICE_CLONING_GUIDE.md
-│
-├── Output Folders:
-│   ├── Amit_Clone/                # Amit's generated audio files
-│   └── Saanvi_Clone/              # Saanvi's generated audio files
-│
-└── _archive/                       # Old/test files (safe to delete)
-```
-
----
-
-## 🎯 Required Files (DO NOT DELETE)
-
-### Essential Files:
-1. **_reference_audio/audio_sample.wav** - Amit's voice sample
-2. **_reference_audio/Saanvi_Voice_Clone.wav** - Saanvi's voice sample
-3. **amit_narrate.py** - Main script for Amit's voice
-4. **clone_amit_voice.py** - Alternative Amit script
-5. **clone_saanvi_voice.py** - Main script for Saanvi's voice
-
-### Your Script:
-- **module_02_video_script.md** - Your video script (currently being generated)
-
-### Can Be Deleted:
-- **_archive/** folder - Contains old test files and outputs
-- Individual **cloned_output_*.wav** files (moved to _archive)
-
----
-
-## 🚀 How To Use
-
-### Option 1: Generate Amit's Voice from Text File (Recommended)
-
-1. **Create a text file** with your script:
-   ```powershell
-   # Create file in Notepad
-   notepad my_script.txt
-   ```
-
-2. **Run the generation:**
-   ```powershell
-   python amit_narrate.py my_script.txt
-   ```
-
-3. **Find output in:**
-   ```
-   Amit_Clone/amit_TIMESTAMP.wav
-   ```
-
-### Option 2: Paste Script Directly
-
-1. **Edit the script file:**
-   ```powershell
-   notepad clone_amit_voice.py
-   ```
-
-2. **Find this section and paste your text:**
-   ```python
-   YOUR_SCRIPT = """
-   Paste your text here
-   """
-   ```
-
-3. **Run:**
-   ```powershell
-   python clone_amit_voice.py
-   ```
-
-### Option 3: Generate Saanvi's Voice
-
-1. **Edit the script:**
-   ```powershell
-   notepad clone_saanvi_voice.py
-   ```
-
-2. **Modify the test_sentences list**
-
-3. **Run:**
-   ```powershell
-   python clone_saanvi_voice.py
-   ```
-
----
-
-## 🎬 NEW: Video Automation (PowerPoint → Video)
-
-### Create Complete Videos from Presentations!
-
-Turn your PowerPoint slides + speaker notes into professional videos automatically!
-
-**Quick Start:**
+### Video Automation
 ```powershell
-# Install video dependencies
-pip install -r _video_automation/requirements_video.txt
+# Install dependencies
+pip install -r requirements.txt
 
 # Create video from PowerPoint
-python _video_automation/video_creator.py your_slides.pptx
-```
-
-**What It Does:**
-1. ✅ Reads PowerPoint slides
-2. ✅ Generates voice narration from speaker notes
-3. ✅ Creates video with slide transitions
-4. ✅ Syncs audio with slides
-5. ✅ Adds B-roll/screen recordings
-6. ✅ Exports YouTube-ready video
-
-**Features:**
-- 🎤 AI voice narration (Amit or Saanvi)
-- 📊 Professional slide rendering
-- 🎬 Automatic timing synchronization
-- 📹 Screen recording integration
-- 📝 Chapter markers for YouTube
-- 🎞️ Multiple transition effects
-
-**Example PowerPoint Setup:**
-
-```
-Slide 1: Introduction
-Speaker Notes: "Welcome to Module 2. In this video, we'll explore three key concepts."
-
-Slide 2: Core Concept
-Speaker Notes: "The first concept is important. [PAUSE:2] Let me demonstrate. [SCREEN:demo.mp4]"
-
-Slide 3: Summary
-Speaker Notes: "To summarize, we covered three main points. Thank you for watching!"
-```
-
-**Generate Video:**
-```powershell
-python _video_automation/video_creator.py module_02.pptx --voice amit --captions --chapters
-```
-
-**📖 Full Documentation:**
-See `_video_automation/README_VIDEO.md` for complete guide, examples, and advanced features.
-
----
-
-## ⚙️ System Requirements
-
-### Required Files Summary:
-- ✅ Python 3.12 installed
-- ✅ Chatterbox TTS package
-- ✅ PyTorch and dependencies
-- ✅ Reference audio files
-
-### Check Your Installation:
-```powershell
-python -c "import torch; print('PyTorch:', torch.__version__)"
-python -c "import chatterbox; print('Chatterbox: OK')"
+python _video_automation/video_creator.py your_slides.pptx --voice amit
 ```
 
 ---
 
-## 📊 Performance
+## 📁 Project Structure
 
-| Hardware | Speed | 10-minute audio |
-|----------|-------|-----------------|
-| CPU only | ~10 sec/sentence | ~20 minutes |
-| NVIDIA GPU | ~1-2 sec/sentence | ~2-3 minutes |
+```
+chatterbox-voice-clone/
+│
+├── requirements.txt              # 📦 All dependencies (consolidated)
+├── README.md                     # 📖 This file
+│
+├── Voice Cloning Scripts:
+│   ├── amit_narrate.py           # Generate Amit's voice (from file)
+│   ├── clone_amit_voice.py       # Generate Amit's voice (paste script)
+│   └── clone_saanvi_voice.py     # Generate Saanvi's voice
+│
+├── _reference_audio/             # 🎤 Voice samples (REQUIRED)
+│   ├── audio_sample.wav          # Amit's voice reference
+│   └── Saanvi_Voice_Clone.wav    # Saanvi's voice reference
+│
+├── _scripts/                     # 🔧 Utility scripts
+│   ├── combine_audio_files.py    # Combine multiple audio files
+│   └── generate_long_audio.py    # Universal long audio generator
+│
+├── _video_automation/            # 🎬 Video Creation System
+│   ├── Core Modules:
+│   │   ├── video_creator.py          # Main video automation CLI
+│   │   ├── video_composer.py         # Video assembly engine
+│   │   ├── ppt_parser.py             # PowerPoint parser
+│   │   ├── slide_redesigner_v2.py    # Slide redesigner (current)
+│   │   ├── slide_composer_snowbrix.py # Snowbrix brand composer
+│   │   ├── slide_composer.py         # Base slide composer
+│   │   ├── snowbrix_layouts_complete.py # Complete layout system
+│   │   ├── image_generator.py        # AI image generation
+│   │   ├── prompt_generator.py       # AI prompt generation
+│   │   ├── api_manager.py            # Multi-account API manager
+│   │   ├── config_manager.py         # Configuration management
+│   │   └── inventory_manager.py      # Project inventory
+│   │
+│   ├── Brand System:
+│   │   ├── brand_colors_snowbrix.py  # Snowbrix colors (current)
+│   │   ├── brand_colors.py           # Base brand colors
+│   │   └── Snowbrix_TextOnly_Full_Cream.png # Reference logo
+│   │
+│   ├── examples/                 # 📚 Examples & Tools
+│   │   ├── demos/               # Demo scripts (7 files)
+│   │   ├── tests/               # Test scripts (5 files)
+│   │   ├── tools/               # Utility tools (4 files)
+│   │   ├── sample_config.json   # Example configuration
+│   │   ├── sample_presentation.pptx # Sample PowerPoint
+│   │   └── README.md            # Examples documentation
+│   │
+│   ├── docs/                     # 📖 Video automation guides
+│   │   ├── README_VIDEO.md          # Main video guide
+│   │   ├── QUICK_START.md           # Quick start guide
+│   │   ├── WORKFLOW_GUIDE.md        # Workflow documentation
+│   │   ├── SETUP_COMPLETE.md        # Setup instructions
+│   │   ├── BRAND_STYLES_GUIDE.md    # Brand style guide
+│   │   ├── COLOR_PALETTE_GUIDE.md   # Color palette reference
+│   │   └── GOOGLE_API_SETUP.md      # Google API setup
+│   │
+│   └── _projects/                # 🎞️ Generated video projects
+│       └── [project_name]/       # Individual project folders
+│           ├── images/           # Generated slide backgrounds
+│           ├── image_prompts/    # AI prompts used
+│           ├── slides_rendered/  # Rendered slide images
+│           └── output/           # Final videos & audio
+│
+├── _docs/                        # 📚 Voice cloning documentation
+│   ├── VOICE_CLONING_GUIDE.md    # Complete voice cloning guide
+│   ├── VOICE_CLONES_QUICK_REFERENCE.md # Quick reference
+│   └── AUDIO_LENGTH_GUIDE.md     # Audio length guidelines
+│
+├── Output Folders (Generated):
+│   ├── Amit_Clone/              # Amit's audio outputs
+│   └── Saanvi_Clone/            # Saanvi's audio outputs
+│
+└── Snowflake_Template_2025.pptx # 📊 Reference template
 
-Your system: **CPU only** (no GPU detected)
+Note: All generated outputs (images, audio, video) are gitignored
+```
 
 ---
 
-## 🎵 Audio Output
+## ✨ Features
 
-- **Format:** WAV (24kHz, 16-bit PCM)
-- **Quality:** High-quality speech synthesis
-- **Length:** Any length (automatically chunked)
+### 🎤 Voice Cloning
+- **Multiple Voices:** Amit (professional male) & Saanvi (female)
+- **High Quality:** 24kHz, 16-bit PCM WAV output
+- **Any Length:** Automatic chunking for long scripts
+- **Fast Generation:** ~10 sec/sentence on CPU
+- **Custom Voices:** Add your own voice samples
 
----
+### 🎬 Video Automation
+- **PowerPoint Integration:** Convert slides + notes → video
+- **AI Narration:** Automatic voice-over from speaker notes
+- **Smart Timing:** Per-slide audio synchronization
+- **Professional Output:** H.264/AAC, YouTube-ready
+- **Batch Processing:** Process multiple presentations
 
-## 📝 Common Commands
+### 🎨 Snowbrix Slide Design
+- **Professional Brand:** Cream + green color palette
+- **15 Layouts:** Title, content, columns, quotes, sections
+- **Consistent Style:** Typography, spacing, alignment
+- **Auto-formatting:** Numbered points, bullets, images
+- **Template System:** Reusable presentation templates
 
-### Generate from text file:
-```powershell
-python amit_narrate.py script.txt
-```
-
-### Generate with Saanvi's voice:
-```powershell
-python clone_saanvi_voice.py
-```
-
-### Combine multiple audio files:
-```powershell
-python _scripts/combine_audio_files.py
-```
-
-### Check what's generating:
-- Look in `Amit_Clone/` or `Saanvi_Clone/` folders
-- Newest file = latest generation
-
----
-
-## 🧹 Cleanup Guide
-
-### Safe to Delete:
-- ✅ `_archive/` folder (old test files)
-- ✅ Individual `cloned_output_*.wav` files
-- ✅ `output.wav`
-- ✅ Test scripts in `_archive/`
-
-### Keep These:
-- ❌ **DO NOT DELETE** `_reference_audio/` folder
-- ❌ **DO NOT DELETE** main script files
-- ❌ **DO NOT DELETE** `module_02_video_script.md`
-
-### Output Management:
-```powershell
-# Delete old outputs (keep only recent)
-cd Amit_Clone
-del /Q amit_*.wav  # Careful: deletes all Amit outputs
-
-# Or move to backup
-mkdir backup
-move amit_*.wav backup/
-```
+### 🖼️ AI Image Generation
+- **Google Gemini:** Imagen 3.0 integration
+- **Brand-Aware:** Auto-generates Snowbrix-styled images
+- **Smart Prompts:** Context-aware prompt generation
+- **Multi-Account:** Automatic API key rotation
+- **16:9 Output:** Perfect for presentation slides
 
 ---
 
-## 🛠️ Troubleshooting
+## 📦 Installation
 
-### Script won't run:
+### Prerequisites
+- Python 3.12+
+- Windows 11 (or Windows 10)
+- FFmpeg (for video processing)
+
+### Step 1: Install FFmpeg
 ```powershell
-# Check Python
-python --version
+# Using winget (recommended)
+winget install ffmpeg
 
-# Check you're in the right folder
-cd C:\Work\code\Voice_Clone\Chartterbox
+# Or download from https://ffmpeg.org/download.html
 ```
 
-### "Cannot find reference audio":
+### Step 2: Install Python Dependencies
 ```powershell
-# Check if files exist
-ls _reference_audio/
+# Install all dependencies
+pip install -r requirements.txt
 ```
 
-### Generation is slow:
-- Normal for CPU (10 sec/sentence)
-- Consider GPU upgrade for 5-10x speed
+### Step 3: Set Up Chatterbox TTS
+Follow instructions in `_docs/VOICE_CLONING_GUIDE.md`
+
+### Step 4: Configure Google API (Optional)
+For AI image generation:
+```powershell
+python _video_automation/examples/tools/setup_google_api.py
+```
+
+---
+
+## 🎯 Usage Examples
+
+### 1. Voice Cloning - Simple
+
+**Generate audio from text file:**
+```powershell
+# Create your script
+notepad my_script.txt
+
+# Generate audio
+python amit_narrate.py my_script.txt
+
+# Output: Amit_Clone/amit_TIMESTAMP.wav
+```
+
+### 2. Voice Cloning - Long Form
+
+**Generate long-form content:**
+```python
+# Use the utility script
+from _scripts.generate_long_audio import generate_long_audio
+
+text = """
+Your long script here...
+Multiple paragraphs...
+"""
+
+generate_long_audio(
+    text=text,
+    reference_audio="_reference_audio/audio_sample.wav",
+    output_path="output.wav",
+    progress_callback=lambda x: print(f"Progress: {x}%")
+)
+```
+
+### 3. Video Automation - Basic
+
+**Create video from PowerPoint:**
+```powershell
+python _video_automation/video_creator.py presentation.pptx \
+    --voice amit \
+    --output my_video.mp4
+```
+
+### 4. Video Automation - Advanced
+
+**With all options:**
+```powershell
+python _video_automation/video_creator.py module_02.pptx \
+    --voice amit \
+    --pause 1.5 \
+    --resolution 1920x1080 \
+    --fps 30 \
+    --output output/module_02_final.mp4
+```
+
+### 5. Slide Redesign
+
+**Redesign PowerPoint with Snowbrix brand:**
+```powershell
+python _video_automation/slide_redesigner_v2.py old_slides.pptx \
+    --brand snowbrix \
+    --generate-images \
+    --output new_slides.pptx
+```
+
+---
+
+## 🔧 Configuration
+
+### Voice Clone Configuration
+
+Edit scripts to customize:
+- Voice selection (Amit/Saanvi)
+- Output directory
+- Audio format settings
+
+### Video Automation Configuration
+
+Create `api_keys.json` in `_video_automation/`:
+```json
+{
+  "google_api_keys": [
+    "YOUR_GOOGLE_API_KEY_1",
+    "YOUR_GOOGLE_API_KEY_2"
+  ]
+}
+```
+
+See `_video_automation/api_keys.example.json` for template.
+
+---
+
+## 📊 System Requirements
+
+### Minimum Requirements
+- **OS:** Windows 10/11
+- **CPU:** Intel i5 or equivalent
+- **RAM:** 8GB
+- **Storage:** 5GB free space
+- **Python:** 3.12+
+
+### Recommended Requirements
+- **CPU:** Intel i7 or AMD Ryzen 7
+- **RAM:** 16GB
+- **GPU:** NVIDIA GPU with CUDA (10x faster voice cloning)
+- **Storage:** 20GB free space
+
+### Performance Benchmarks
+
+| Task | CPU (i5) | CPU (i7) | GPU (NVIDIA) |
+|------|----------|----------|--------------|
+| Voice cloning (10 min) | ~20 min | ~15 min | ~2-3 min |
+| Video rendering (5 min) | ~3 min | ~2 min | ~1 min |
+| Image generation (1 image) | N/A | N/A | ~10 sec |
 
 ---
 
 ## 📚 Documentation
 
-Detailed guides available in `_docs/` folder:
-- **VOICE_CLONES_QUICK_REFERENCE.md** - Quick commands
-- **AUDIO_LENGTH_GUIDE.md** - Length limits and optimization
-- **VOICE_CLONING_GUIDE.md** - Complete guide
+### Voice Cloning Guides
+- [`_docs/VOICE_CLONING_GUIDE.md`](_docs/VOICE_CLONING_GUIDE.md) - Complete guide
+- [`_docs/VOICE_CLONES_QUICK_REFERENCE.md`](_docs/VOICE_CLONES_QUICK_REFERENCE.md) - Quick commands
+- [`_docs/AUDIO_LENGTH_GUIDE.md`](_docs/AUDIO_LENGTH_GUIDE.md) - Length optimization
+
+### Video Automation Guides
+- [`_video_automation/README_VIDEO.md`](_video_automation/README_VIDEO.md) - Main video guide
+- [`_video_automation/QUICK_START.md`](_video_automation/QUICK_START.md) - Quick start
+- [`_video_automation/WORKFLOW_GUIDE.md`](_video_automation/WORKFLOW_GUIDE.md) - Workflow
+- [`_video_automation/BRAND_STYLES_GUIDE.md`](_video_automation/BRAND_STYLES_GUIDE.md) - Brand guide
+
+### Examples
+- [`_video_automation/examples/README.md`](_video_automation/examples/README.md) - Examples overview
 
 ---
 
-## 💡 Tips
+## 🛠️ Troubleshooting
 
-1. **For long scripts:** Use `amit_narrate.py` with text file
-2. **Test first:** Generate a short test before long scripts
-3. **Backup:** Keep copies of your reference audio files
-4. **Organize:** Put generated files in dated folders
-5. **Clean up:** Regularly delete old test outputs
+### Voice Cloning Issues
+
+**"Cannot find reference audio"**
+```powershell
+# Verify files exist
+ls _reference_audio/
+```
+
+**Slow generation**
+- Normal for CPU: ~10 sec/sentence
+- Consider GPU for 10x speedup
+- Use progress callbacks to monitor
+
+### Video Automation Issues
+
+**"FFmpeg not found"**
+```powershell
+# Install FFmpeg
+winget install ffmpeg
+
+# Verify installation
+ffmpeg -version
+```
+
+**"Google API quota exceeded"**
+- Add more API keys to `api_keys.json`
+- System automatically rotates between keys
+
+**Video/audio sync issues**
+- Ensure per-slide audio files are generated
+- Check `_calculate_timings()` in video_composer.py
 
 ---
 
-## 🎯 Quick Reference Card
+## 🧹 Maintenance
 
-| Task | Command |
-|------|---------|
-| Generate Amit's voice | `python amit_narrate.py script.txt` |
-| Generate Saanvi's voice | `python clone_saanvi_voice.py` |
-| Combine audio files | `python _scripts/combine_audio_files.py` |
-| Check GPU | `python -c "import torch; print(torch.cuda.is_available())"` |
+### Clean Generated Files
+```powershell
+# Clean old audio outputs
+del Amit_Clone\*.wav
+del Saanvi_Clone\*.wav
+
+# Clean video project outputs (keeps source code)
+# _projects/*/output/ and _projects/*/images/ are gitignored
+```
+
+### Update Dependencies
+```powershell
+pip install -r requirements.txt --upgrade
+```
+
+---
+
+## 🤝 Contributing
+
+This is a personal project, but suggestions are welcome! See the GitHub repository for issues and discussions.
+
+---
+
+## 📝 License
+
+This project uses:
+- **Chatterbox TTS** - Check Chatterbox license
+- **Google Gemini API** - Google Cloud terms apply
+- **MoviePy** - MIT License
+- **python-pptx** - MIT License
+
+---
+
+## 🎯 Roadmap
+
+- [ ] Add more voice clones
+- [ ] Support for other TTS engines (ElevenLabs, Azure)
+- [ ] Video templates library
+- [ ] Automated chapter markers
+- [ ] Subtitle generation
+- [ ] Multi-language support
+- [ ] Web interface
+
+---
+
+## 📞 Support
+
+For issues, questions, or suggestions:
+- Open an issue on [GitHub](https://github.com/amitkoti/chatterbox-voice-clone)
+- Check the documentation in `_docs/` and `_video_automation/docs/`
 
 ---
 
 ## ✅ Current Status
 
-- ✅ Chatterbox TTS installed
-- ✅ 2 voice clones configured (Amit + Saanvi)
-- ✅ All dependencies installed
-- ✅ System ready to use
-- ℹ️ CPU-only mode (slower but works perfectly)
+- ✅ Voice cloning fully operational (Amit + Saanvi)
+- ✅ Video automation system complete
+- ✅ Snowbrix brand design system implemented
+- ✅ Google Gemini image generation integrated
+- ✅ Repository organized and cleaned
+- ✅ All dependencies consolidated
+- ✅ Production-ready
 
 ---
 
-## 📞 Need Help?
-
-Check documentation in `_docs/` folder or review:
-- Main scripts have comments explaining usage
-- Error messages usually indicate missing files
-- Make sure you're in the correct directory
-
----
-
-**Last Updated:** February 11, 2026
+**Last Updated:** February 13, 2026
+**Version:** 2.0
 **System:** Windows 11, Python 3.12, CPU Mode
+**Repository:** https://github.com/amitkoti/chatterbox-voice-clone
