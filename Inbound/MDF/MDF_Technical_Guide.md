@@ -6263,22 +6263,161 @@ Dry-run shows generated SQL but doesn't check if table exists. Test actual execu
 **[Module 04 complete]**
 
 ## Module 05: CSV Ingestion Lab
-[To be written]
 
-## Module 06: Semi-Structured Data
-[To be written]
+**Duration:** ~30 minutes | **Type:** 100% Hands-On | **Deliverable:** End-to-end CSV pipeline (3 sources)
+
+### Concept
+Module 05 proves the framework works - no new objects, just execution. Upload CSV files → run SP_GENERIC_INGESTION → verify in audit logs → query loaded data. Three sources, one procedure call. This is metadata-driven ingestion in action.
+
+### Lab Steps
+**Step 1: Create target tables** (~8 min) - DDL for RAW_CUSTOMERS, RAW_ORDERS, RAW_PRODUCTS with _MDF metadata columns
+**Step 2: Upload CSVs** (~7 min) - PUT or Snowsight UI upload
+**Step 3: Preview data** (~5 min) - SELECT $1, $2... to catch schema mismatches
+**Step 4: Run ingestion** (~3 min) - `CALL SP_GENERIC_INGESTION('ALL', FALSE);`
+**Step 5: Check audit logs** (~3 min) - Verify SUCCESS status, row counts
+**Step 6: Query data** (~4 min) - Count rows, check lineage via _MDF_FILE_NAME
+
+**Gotcha:** FILE_PATTERN must match uploaded files exactly. Test with `LIST @stage PATTERN = '...'` first.
+
+**[Full SQL scripts in repository: module_05/01_csv_ingestion_lab.sql]**
+
+---
+
+## Module 06: Semi-Structured Data (JSON & Parquet)
+
+**Duration:** ~35 minutes | **Type:** Hands-On + Concepts | **Deliverable:** JSON & Parquet pipelines with FLATTEN
+
+### Concept
+Semi-structured data (JSON, Parquet) uses schema-on-read: load into VARIANT, query with extraction. This module covers LATERAL FLATTEN for nested JSON, MATCH_BY_COLUMN_NAME for Parquet, and dynamic schema handling.
+
+### Lab Steps
+**Step 1: Load JSON** (~10 min) - events.json into RAW_EVENTS (VARIANT column)
+**Step 2: Extract fields** (~10 min) - `RAW_JSON:event_id::VARCHAR`, `RAW_JSON:device.type::VARCHAR`
+**Step 3: FLATTEN arrays** (~10 min) - `LATERAL FLATTEN(INPUT => RAW_JSON:items)` for nested arrays
+**Step 4: Load Parquet** (~5 min) - sensors.parquet with `MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE`
+
+**Gotcha:** `STRIP_OUTER_ARRAY` must match JSON structure. Test with small file first.
+
+**[Full SQL: module_06/01_json_ingestion_lab.sql]**
+
+---
 
 ## Module 07: Error Handling & Audit
-[To be written]
 
-## Module 08: Automation - Tasks & Streams
-[To be written - Focus on audit-driven and event-driven, not just time-based]
+**Duration:** ~20 minutes | **Type:** Pattern + Hands-On | **Deliverable:** Validation procedures + retry logic
+
+### Concept
+Three-layer validation: COPY-time (ON_ERROR mode) → post-load (SP_VALIDATE_LOAD) → promotion gates. This module implements quality checks and retry patterns.
+
+### Lab Steps
+**Step 1: Test ON_ERROR modes** (~8 min) - Load file with bad rows using CONTINUE vs ABORT
+**Step 2: Run validation** (~7 min) - `CALL SP_VALIDATE_LOAD(batch_id, config_id, source);`
+**Step 3: Check error log** (~5 min) - Query INGESTION_ERROR_LOG for rejected records
+
+**Gotcha:** Validation runs POST-load. Failed validation doesn't remove data from RAW (by design - RAW is immutable landing).
+
+**[Full SQL: module_07/01_error_handling_lab.sql]**
+
+---
+
+## Module 08: Automation (Tasks & Streams)
+
+**Duration:** ~25 minutes | **Type:** Architecture + Hands-On | **Deliverable:** Task tree + event-driven automation
+
+### Concept
+Snowflake Tasks automate ingestion via CRON scheduling. Streams track config/audit changes for event-driven processing. This module builds task dependencies and audit-driven automation (not just time-based).
+
+### Lab Steps
+**Step 1: Create task tree** (~10 min)
+```sql
+CREATE TASK MDF_TASK_ROOT
+    SCHEDULE = 'USING CRON 0 6 * * * America/New_York'
+AS SELECT 1;
+
+CREATE TASK MDF_TASK_INGEST
+    AFTER MDF_TASK_ROOT
+AS CALL SP_GENERIC_INGESTION('ALL', FALSE);
+
+-- Resume (leaf first!)
+ALTER TASK MDF_TASK_INGEST RESUME;
+ALTER TASK MDF_TASK_ROOT RESUME;
+```
+
+**Step 2: Create audit stream** (~8 min) - Track failures for auto-retry
+```sql
+CREATE STREAM MDF_AUDIT_STREAM ON TABLE INGESTION_AUDIT_LOG;
+```
+
+**Step 3: Test execution** (~7 min) - `EXECUTE TASK MDF_TASK_ROOT;` + check task history
+
+**Gotcha #7:** Resume leaf tasks FIRST, suspend root FIRST. Wrong order = orphaned tasks.
+
+**[Full SQL: module_08/01_tasks_and_scheduling.sql]**
+
+---
 
 ## Module 09: Monitoring & Dashboards
-[To be written]
 
-## Module 10: Schema Evolution & Advanced
-[To be written]
+**Duration:** ~20 minutes | **Type:** Hands-On + Demo | **Deliverable:** 7 monitoring views + Snowsight dashboard
+
+### Concept
+Monitoring views transform audit logs into KPIs. Seven views (VW_SOURCE_HEALTH, VW_DAILY_SUMMARY, VW_ERROR_ANALYSIS, etc.) provide operational dashboards.
+
+### Lab Steps
+**Step 1: Create VW_SOURCE_HEALTH** (~10 min) - Health status per source (HEALTHY/WARNING/CRITICAL)
+**Step 2: Create VW_DAILY_SUMMARY** (~5 min) - Today's KPIs (runs, rows, success rate)
+**Step 3: Build Snowsight dashboard** (~5 min) - Add tiles for KPIs, heat map for health
+
+**Sample query:**
+```sql
+SELECT * FROM VW_SOURCE_HEALTH
+ORDER BY HEALTH_STATUS, SOURCE_NAME;
+```
+
+**Gotcha:** Views can be expensive at scale. Use materialized views for large audit tables (1M+ rows).
+
+**[Full SQL: module_09/01_monitoring_views.sql]**
+
+---
+
+## Module 10: Schema Evolution & Advanced Topics
+
+**Duration:** ~25 minutes | **Type:** Advanced + Demo | **Deliverable:** Schema evolution procedures + multi-client onboarding
+
+### Concept
+Schema evolution handles source changes automatically. `SP_DETECT_SCHEMA_CHANGES` compares file vs table schema. `SP_APPLY_SCHEMA_EVOLUTION` adds new columns with safety limits (MAX_NEW_COLUMNS prevents runaway drift).
+
+### Lab Steps
+**Step 1: Detect schema changes** (~10 min)
+```sql
+-- Add column to source file (manual edit)
+-- Then detect
+CALL SP_DETECT_SCHEMA_CHANGES('DEMO_CUSTOMERS_CSV');
+-- Returns: {changes_detected: true, new_columns: ["NEW_FIELD"]}
+```
+
+**Step 2: Apply changes** (~10 min)
+```sql
+-- Dry-run first (safe)
+CALL SP_APPLY_SCHEMA_EVOLUTION('DEMO_CUSTOMERS_CSV', TRUE);
+
+-- Apply if validated
+CALL SP_APPLY_SCHEMA_EVOLUTION('DEMO_CUSTOMERS_CSV', FALSE);
+
+-- Verify
+DESC TABLE MDF_RAW_DB.DEMO_ERP.RAW_CUSTOMERS;
+-- Should show new column added
+```
+
+**Step 3: Multi-client onboarding** (~5 min) - Bulk SP_REGISTER_SOURCE calls
+
+**Gotcha:** MAX_NEW_COLUMNS default is 10. If source adds 15 columns at once → blocks and alerts (prevents schema chaos).
+
+**[Full SQL: module_10/01_schema_evolution.sql]**
+
+---
+
+**[Part 3: Modules 01-10 COMPLETE ✅]**
 
 ---
 
