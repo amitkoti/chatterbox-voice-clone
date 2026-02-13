@@ -1,0 +1,58 @@
+# Chatterbox Voice Clone & Video Automation
+# Complete dependencies for the entire project
+# Install with: pip install -r requirements.txt
+
+# ==========================================
+# CORE DEPENDENCIES
+# ==========================================
+
+# PowerPoint handling
+python-pptx>=0.6.21
+
+# Image processing
+Pillow>=10.0.0
+
+# ==========================================
+# VOICE CLONING (Chatterbox TTS)
+# ==========================================
+# Note: Chatterbox TTS dependencies should be installed separately
+# Follow the instructions in _docs/VOICE_CLONING_GUIDE.md
+
+# Audio processing
+soundfile>=0.12.1
+pydub>=0.25.1
+
+# ==========================================
+# VIDEO AUTOMATION
+# ==========================================
+
+# Video creation and editing
+moviepy>=1.0.3
+
+# Note: moviepy requires ffmpeg to be installed on your system
+# Windows: winget install ffmpeg
+# Linux: apt-get install ffmpeg
+# macOS: brew install ffmpeg
+
+# ==========================================
+# AI IMAGE GENERATION
+# ==========================================
+
+# Google Gemini / Imagen
+google-generativeai>=0.3.0
+
+# ==========================================
+# OPTIONAL DEPENDENCIES
+# ==========================================
+
+# Uncomment if needed for advanced features:
+
+# Advanced image/video processing
+# opencv-python>=4.8.0
+
+# Direct ffmpeg control
+# ffmpeg-python>=0.2.0
+
+# Local Stable Diffusion (alternative to Gemini)
+# torch>=2.0.0
+# diffusers>=0.21.0

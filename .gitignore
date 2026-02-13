@@ -8,6 +8,7 @@ venv/
 env/
 ENV/
 .venv
+*.pyc
 
 # Audio/Video outputs (large files)
 *.wav
@@ -16,17 +17,34 @@ ENV/
 *.avi
 *.mov
 
-# But keep reference audio samples
+# But keep reference audio samples (needed for voice cloning)
 !_reference_audio/*.wav
+
+# Images (generated outputs)
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# But keep one logo reference
+!_video_automation/Snowbrix_TextOnly_Full_Cream.png
 
 # PowerPoint files (can be large)
 *.pptx
-!Snowflake_Template_2025.pptx
-!_video_automation/examples/*.pptx
 
-# Project outputs
+# But keep template examples
+!Snowflake_Template_2025.pptx
+!_video_automation/examples/sample_presentation.pptx
+
+# All generated project outputs
+_video_automation/_projects/*/images/
+_video_automation/_projects/*/image_prompts/
+_video_automation/_projects/*/output/
+_video_automation/_projects/*/slides_rendered/
 _projects/*/output/
 _projects/*/slides_rendered/
+
+# Generated clones
 Amit_Clone/
 Saanvi_Clone/
 
@@ -35,6 +53,7 @@ Saanvi_Clone/
 *TEMP_MPY_wvf_snd.mp4
 .DS_Store
 Thumbs.db
+test_slide_audio.txt
 
 # IDE
 .vscode/
@@ -47,8 +66,15 @@ api_keys.json
 .env
 *.key
 
-# Claude settings (optional - keep local only)
-.claude/settings.local.json
+# Claude settings
+.claude/
 
 # Logs
 *.log
+
+# Test and demo outputs
+test_*.pptx
+demo_*.pptx
+*_output_*.pptx
+Module_*.pptx
+module_02_video_script.md
